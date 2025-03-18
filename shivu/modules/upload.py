@@ -52,7 +52,7 @@ async def upload(update: Update, context: CallbackContext) -> None:
         try:
             rarity = rarity_map[int(args[3])]
         except KeyError:
-            await update.message.reply_text('Invalid rarity. Please use 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14.')
+            await update.message.reply_text('Invalid rarity. Please use 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23.')
             return
 
         id = str(await get_next_sequence_number('character_id')).zfill(2)
@@ -74,7 +74,7 @@ async def upload(update: Update, context: CallbackContext) -> None:
             )
             character['message_id'] = message.message_id
             await collection.insert_one(character)
-            await update.message.reply_text('CHARACTER ADDED....👍')
+            await update.message.reply_text('CHARACTER ADDED SUCCESSFULLY....✅')
         except:
             await collection.insert_one(character)
             update.effective_message.reply_text("Character Added but no Database Channel Found, Consider adding one.")
@@ -138,7 +138,7 @@ async def update(update: Update, context: CallbackContext) -> None:
             try:
                 new_value = rarity_map[int(args[2])]
             except KeyError:
-                await update.message.reply_text('Invalid rarity. Please use 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14.')
+                await update.message.reply_text('Invalid rarity. Please use 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23.')
                 return
         else:
             new_value = args[2]
