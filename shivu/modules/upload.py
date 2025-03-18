@@ -132,7 +132,7 @@ async def update(update: Update, context: CallbackContext) -> None:
         if args[1] in ['name', 'anime']:
             new_value = args[2].replace('-', ' ').title()
         elif args[1] == 'rarity':
-            rarity_map = rarity_map = {1: "⚪ 𝐂𝐨𝐦𝐦𝐨𝐧", 2: "🟣 𝐍𝐨𝐫𝐦𝐚𝐥", 3: "🔵 𝐌𝐞𝐝𝐢𝐮𝐦", 4: "🎗 𝐋𝐞𝐠𝐞𝐧𝐝𝐚𝐫𝐲", 5: "💮𝐌𝐲𝐭𝐡𝐢𝐜𝐚𝐥", 6: "🔮𝐋𝐢𝐦𝐢𝐭𝐞𝐝 𝐄𝐝𝐢𝐭𝐢𝐨𝐧", 7: "🫧𝐏𝐫𝐞𝐦𝐢𝐮𝐦", 8: "🎃𝐇𝐚𝐥𝐥𝐨𝐰𝐞𝐞𝐧", 9: "💞𝐕𝐚𝐥𝐞𝐧𝐭𝐢𝐧𝐞", 10: "🌲𝐂𝐡𝐫𝐢𝐬𝐭𝐦𝐚𝐬", 11: "👶𝐂𝐡𝐢𝐛𝐢", 12: "🐰𝐁𝐮𝐧𝐧𝐲", 13: "🩺𝐍𝐮𝐫𝐬𝐞", 14: "🩺𝐃𝐨𝐜𝐭𝐨𝐫", 15: "🏖️𝐒𝐮𝐦𝐦𝐞𝐫", 16: "🎒𝐒𝐜𝐡𝐨𝐨𝐥", 17: "⚽𝐒𝐩𝐨𝐫𝐭𝐬", 18: "🍻𝐁𝐚𝐫", 19: "🎭𝐂𝐨𝐬𝐩𝐥𝐚𝐲", 20: "🎀𝐒𝐮𝐫𝐩𝐫𝐢𝐬𝐞"}
+            rarity_map = rarity_map = {1: "⚪ Common", 2: "🟣 Rare", 3: "🟢 Medium", 4: "🟡 Legendary", 5: "💮 Special Edition)", 6: "🔮 Limited Edition", 7: "🎐 Celestial Beauty", 8: "🔖 Cosplay", 9: "💦 Wet Elegance", 10: "🪽 Divine Edition", 11: "💸 Premium Edition", 12: "👘 Kimono Grace", 13: "🌙 Moonlight Enigma", 14: "❄️ Frost Enchantress", 15: "🪔 Diwali Radiance", 16: "🌈 Holi Color Brust", 17: "☪️ Eid Crescent Beauty", 18: "💝 Valentine's Beloved", 19: "🛕 Ram Navami Devotion", 20: "🎇 New Year's Sparkle", 21: "🎃 Halloween Specte", 22: "🌲 Christmas Miracle", 23: "(🌞 Midsummer Bloom"}
 
 
             try:
