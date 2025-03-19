@@ -43,7 +43,7 @@ async def random_daily_reward(update, context):
     await user_collection.update_one({'id': user_id}, {'$inc': {'balance': -crime_fee}})
 
     # Generate a random token reward between 500 and 1000
-    random_reward = random.randint(600, 1000)
+    random_reward = random.randint(8000, 10125)
 
     # Generate a random congratulatory message
     congratulatory_messages = ["Explore a dungeon", "Explore a dark forest", "Explore ruins", "Explore an elvish village", "Explore a goblin nest", "Explore an orc den"]
