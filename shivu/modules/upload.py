@@ -12,7 +12,7 @@ img_url character-name anime-name rarity-number
 
 use rarity number accordingly rarity Map
 
-rarity_map = 1 (⚪ Common), 2 (🟣 Rare) , 3 (🟢 Medium), 4 (🟡 Legendary), 5 (💮 Special Edition), 6 (🔮 Limited Edition), 7 (🎐 Celestial Beauty), 8 (🪽 Divine Edition), 9(💦 Wet Elegance), 10(🔖 Cosplay), 11(💸 Premium Edition), 12(👘 Kimono Grace), 13(🌙 Moonlight Enigma), 14(❄️ Frost Enchantress), 15(🪔 Diwali Radiance), 16(🌈 Holi Color Brust), 17(☪️ Eid Crescent Beauty), 18(💝 Valentine's Beloved), 19(🛕 Ram Navami Devotion), 20(🎇 New Year's Sparkle), 21(🎃 Halloween Specte), 22(🌲 Christmas Miracle), 23(🌞 Midsummer Bloom)"""
+rarity_map = 1 (⚪️ Common), 2 (🟣 Rare) , 3 (🟡 Legendary), 4 (🟢 Medium)"""
 
 
 
@@ -48,7 +48,7 @@ async def upload(update: Update, context: CallbackContext) -> None:
             await update.message.reply_text('Invalid URL.')
             return
 
-        rarity_map = rarity_map = {1: "⚪ Common", 2: "🟣 Rare", 3: "🟢 Medium", 4: "🟡 Legendary", 5: "💮 Special Edition)", 6: "🔮 Limited Edition", 7: "🎐 Celestial Beauty", 8: "🪽 Divine Edition", 9: "💦 Wet Elegance", 10: "🔖 Cosplay", 11: "💸 Premium Edition", 12: "👘 Kimono Grace", 13: "🌙 Moonlight Enigma", 14: "❄️ Frost Enchantress", 15: "🪔 Diwali Radiance", 16: "🌈 Holi Color Brust", 17: "☪️ Eid Crescent Beauty", 18: "💝 Valentine's Beloved", 19: "🛕 Ram Navami Devotion", 20: "🎇 New Year's Sparkle", 21: "🎃 Halloween Specte", 22: "🌲 Christmas Miracle", 23: "(🌞 Midsummer Bloom"}
+        rarity_map = {1: "⚪ Common", 2: "🟣 Rare", 3: "🟢 Medium", 4: "🟡 Legendary", 5: "💮 Special Edition)", 6: "🔮 Limited Edition", 7: "🎐 Celestial Beauty", 8: "🪽 Divine Edition", 9: "💦 Wet Elegance", 10: "🔖 Cosplay", 11: "💸 Premium Edition", 12: "👘 Kimono Grace", 13: "🌙 Moonlight Enigma", 14: "❄️ Frost Enchantress", 15: "🪔 Diwali Radiance", 16: "🌈 Holi Color Brust", 17: "☪️ Eid Crescent Beauty", 18: "💝 Valentine's Beloved", 19: "🛕 Ram Navami Devotion", 20: "🎇 New Year's Sparkle", 21: "🎃 Halloween Specte", 22: "🌲 Christmas Miracle", 23: "(🌞 Midsummer Bloom"}
         try:
             rarity = rarity_map[int(args[3])]
         except KeyError:
@@ -74,7 +74,7 @@ async def upload(update: Update, context: CallbackContext) -> None:
             )
             character['message_id'] = message.message_id
             await collection.insert_one(character)
-            await update.message.reply_text('CHARACTER ADDED SUCCESSFULLY....✅')
+            await update.message.reply_text('CHARACTER ADDED....')
         except:
             await collection.insert_one(character)
             update.effective_message.reply_text("Character Added but no Database Channel Found, Consider adding one.")
@@ -132,9 +132,7 @@ async def update(update: Update, context: CallbackContext) -> None:
         if args[1] in ['name', 'anime']:
             new_value = args[2].replace('-', ' ').title()
         elif args[1] == 'rarity':
-            rarity_map = rarity_map = {1: "⚪ Common", 2: "🟣 Rare", 3: "🟢 Medium", 4: "🟡 Legendary", 5: "💮 Special Edition)", 6: "🔮 Limited Edition", 7: "🎐 Celestial Beauty", 8: "🔖 Cosplay", 9: "💦 Wet Elegance", 10: "🪽 Divine Edition", 11: "💸 Premium Edition", 12: "👘 Kimono Grace", 13: "🌙 Moonlight Enigma", 14: "❄️ Frost Enchantress", 15: "🪔 Diwali Radiance", 16: "🌈 Holi Color Brust", 17: "☪️ Eid Crescent Beauty", 18: "💝 Valentine's Beloved", 19: "🛕 Ram Navami Devotion", 20: "🎇 New Year's Sparkle", 21: "🎃 Halloween Specte", 22: "🌲 Christmas Miracle", 23: "(🌞 Midsummer Bloom"}
-
-
+            rarity_map = {1: "⚪ Common", 2: "🟣 Rare", 3: "🟢 Medium", 4: "🟡 Legendary", 5: "💮 Special Edition)", 6: "🔮 Limited Edition", 7: "🎐 Celestial Beauty", 8: "🪽 Divine Edition", 9: "💦 Wet Elegance", 10: "🔖 Cosplay", 11: "💸 Premium Edition", 12: "👘 Kimono Grace", 13: "🌙 Moonlight Enigma", 14: "❄️ Frost Enchantress", 15: "🪔 Diwali Radiance", 16: "🌈 Holi Color Brust", 17: "☪️ Eid Crescent Beauty", 18: "💝 Valentine's Beloved", 19: "🛕 Ram Navami Devotion", 20: "🎇 New Year's Sparkle", 21: "🎃 Halloween Specte", 22: "🌲 Christmas Miracle", 23: "(🌞 Midsummer Bloom"}
             try:
                 new_value = rarity_map[int(args[2])]
             except KeyError:
