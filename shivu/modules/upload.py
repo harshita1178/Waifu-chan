@@ -73,7 +73,7 @@ async def upload(update: Update, context: CallbackContext) -> None:
             )
             character['message_id'] = message.message_id
             await collection.insert_one(character)
-            await update.message.reply_text('CHARACTER ADDED....')
+            await update.message.reply_text('CHARACTER ADDED Successfully....✅')
         except:
             await collection.insert_one(character)
             update.effective_message.reply_text("Character Added but no Database Channel Found, Consider adding one.")
