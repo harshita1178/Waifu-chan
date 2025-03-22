@@ -6,7 +6,7 @@ class Config(object):
     TOKEN = "7583740884:AAHNM9iVB-bWa3T4USseHrTavjBV8P6lAag"
     
     # Updated MongoDB URI
-    mongo_url = "mongodb+srv://Harsh0987:ukdxckfSzJqlMwqQ@cluster0.mlw...mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+    mongo_url = "mongodb+srv://naruto:hinatababy@cluster0.rqyiyzx.mongodb.net/"
 
     PHOTO_URL = [
         "https://graph.org/file/09e83a1d89aceabd480c5-2afc46a31083fe23f2.jpg"
