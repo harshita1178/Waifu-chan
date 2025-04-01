@@ -1,127 +1,98 @@
-#@flexdub_official
 import random
-from html import escape 
-
+import logging
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
-from telegram.ext import CallbackContext, CallbackQueryHandler, CommandHandler
+from telegram.ext import CallbackContext, CallbackQueryHandler, CommandHandler, Application, ContextTypes
 
-from shivu import application, PHOTO_URL, SUPPORT_CHAT, UPDATE_CHAT, BOT_USERNAME, db, GROUP_ID
+# Private aur group image links
+private = [
+    "https://graph.org/file/f8d15f0e2ce23398fc3f1-ccce8de39c4edbd925.jpg",
+    "https://graph.org/file/a3f5d8adc0de5639d5fc7-f5e71146b6e1d4e656.jpg",
+    "https://graph.org/file/90344336f0da2961141a8-9129c1a27bb0bf675f.jpg"
+]
 
-collection = db['total_pm_users']
+group = [
+    "https://graph.org/file/cb5bb601b668116408d11-d80e06bd461a3bcdbd.jpg",
+    "https://graph.org/file/7e3552b9e3f5da0703288-9da63ef27ecdaefdc7.jpg",
+    "https://graph.org/file/64e08a121a44740faf827-0968e6d0b694092e4a.jpg"
+]
 
+# Logging setup
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    level=logging.INFO
+)
+logger = logging.getLogger(__name__)
+
+# Button labels aur URLs
+ADD_BUTTON_TEXT = "ADD ME"
+ADD_BUTTON_URL = f'http://t.me/Madara_Husbando_grabber_Bot?startgroup=new'
+SUPPORT_BUTTON_TEXT = "SUPPORT"
+UPDATE_BUTTON_TEXT = "UPDATES"
+HELP_BUTTON_TEXT = "HELP"
+SOURCE_BUTTON_TEXT = "SOURCE"
+
+# Message templates
+START_CAPTION = """*Heyyyy...* ✨
+*I am An Open Source Character Catcher Bot... Add me in your group, and I will send random character images.*
+"""
+GROUP_CAPTION = "🎴 Alive!?... Connect to me in PM for more information."
+
+# Error handler function
+async def error_handler(update: Update, context: CallbackContext) -> None:
+    """Log the error and send a telegram message to notify the developer."""
+    # Log the error
+    logger.error("Exception while handling an update:", exc_info=context.error)
+    # Send a message to the developer
+    await context.bot.send_message(
+        chat_id=YOUR_CHAT_ID,  # Replace with your chat ID
+        text=f"An error occurred: {context.error}",
+    )
+
+# Start command handler
 async def start(update: Update, context: CallbackContext) -> None:
-    user_id = update.effective_user.id
-    first_name = update.effective_user.first_name
-    username = update.effective_user.username
+    """Send a welcome message to the user when they start the bot."""
+    keyboard = [
+        [InlineKeyboardButton(ADD_BUTTON_TEXT, url=ADD_BUTTON_URL)],
+        [InlineKeyboardButton(SUPPORT_BUTTON_TEXT, url=SUPPORT_CHAT)],
+        [InlineKeyboardButton(UPDATE_BUTTON_TEXT, url=UPDATE_CHAT)],
+        [InlineKeyboardButton(HELP_BUTTON_TEXT, url=BOT_USERNAME)],
+        [InlineKeyboardButton(SOURCE_BUTTON_TEXT, url="https://github.com/your-repo")]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    await update.message.reply_text(START_CAPTION, reply_markup=reply_markup)
 
-    user_data = await collection.find_one({"_id": user_id})
+# Group command handler
+async def group(update: Update, context: CallbackContext) -> None:
+    """Send random group image links."""
+    random_image = random.choice(group)
+    await update.message.reply_text(GROUP_CAPTION)
+    await update.message.reply_photo(random_image)
 
-    if user_data is None:
+# Private command handler
+async def private(update: Update, context: CallbackContext) -> None:
+    """Send random private image links."""
+    random_image = random.choice(private)
+    await update.message.reply_text("Here is your private image!")
+    await update.message.reply_photo(random_image)
 
-        await collection.insert_one({"_id": user_id, "first_name": first_name, "username": username})
+# Main function to start the bot
+async def main():
+    """Start the bot."""
+    # Replace 'YOUR_BOT_TOKEN' with your actual bot token
+    application = Application.builder().token("YOUR_BOT_TOKEN").build()
 
-        await context.bot.send_message(chat_id=GROUP_ID, text=f"<a href='tg://user?id={user_id}'>{first_name}</a> STARTED THE BOT", parse_mode='HTML')
-    else:
+    # Add command handlers
+    application.add_handler(CommandHandler("start", start))
+    application.add_handler(CommandHandler("group", group))
+    application.add_handler(CommandHandler("private", private))
 
-        if user_data['first_name'] != first_name or user_data['username'] != username:
+    # Add error handler
+    application.add_error_handler(error_handler)
 
-            await collection.update_one({"_id": user_id}, {"$set": {"first_name": first_name, "username": username}})
+    # Run the bot
+    await application.run_polling()
 
-
-
-    if update.effective_chat.type== "private":
-
-
-        caption = f"""
-     ***ʜᴇʟʟᴏ....💫  {escape(first_name)}
-
-
-
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━⧫   
-      ✾ Wᴇʟᴄᴏᴍɪɴɢ ʏᴏᴜ ᴛᴏ ᴛʜᴇ 🍃,ᴡᴀɪғᴜ ᴄʜᴀɴ ʙᴏᴛ🫧 
-    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━⧫
-    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━⧫
-    ┠ ➻  I ᴡɪʟʟ Hᴇʟᴘ Yᴏᴜ Fɪɴᴅ Yᴏᴜʀ Waifu Hᴜsʙᴀɴᴅᴏ
-    ┃        ɪɴ Yᴏᴜʀ Gʀᴏᴜᴘ Cʜᴀᴛ. 
-    ┠ ➻  Yᴏᴜ ᴄᴀɴ sᴇᴀʟ ᴛʜᴇᴍ ʙʏ /waifu ᴄᴏᴍᴍᴀɴᴅ 
-    ┃         ᴀɴᴅ ᴀᴅᴅ ᴛᴏ ʏᴏᴜʀ ʜᴀʀᴇᴍ.
-    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━⧫
-      Tᴀᴘ ᴏɴ "Hᴇʟᴘ" ғᴏʀ ᴍᴏʀᴇ ᴄᴏᴍᴍᴀɴᴅs.***"""
-
-        keyboard = [
-            [InlineKeyboardButton("✤ ᴀᴅᴅ ᴍᴇ ✤", url=f'http://t.me/{BOT_USERNAME}?startgroup=new')],
-            [InlineKeyboardButton("☊ 𝗌ᴜᴘᴘᴏʀᴛ ☊", url=f'https://t.me/{SUPPORT_CHAT}'),
-            InlineKeyboardButton("✠ ᴜᴘᴅᴀᴛᴇ𝗌 ✠", url=f'https://t.me/{UPDATE_CHAT}')],
-            [InlineKeyboardButton("✇ ʜᴇʟᴘ ✇", callback_data='help')],[InlineKeyboardButton("≎ ᴄʀᴇᴅɪᴛ ≎", url=f'https://t.me/{UPDATE_CHAT}')],
-        ]
-        reply_markup = InlineKeyboardMarkup(keyboard)
-        photo_url = random.choice(PHOTO_URL)
-
-        await context.bot.send_photo(chat_id=update.effective_chat.id, photo=photo_url, caption=caption, reply_markup=reply_markup, parse_mode='markdown')
-
-    else:
-        photo_url = random.choice(PHOTO_URL)
-        keyboard = [
-
-            [InlineKeyboardButton("✇ ʜᴇʟᴘ ✇", callback_data='help'),
-             InlineKeyboardButton("☊ 𝗌ᴜᴘᴘᴏʀᴛ ☊", url=f'https://t.me/{SUPPORT_CHAT}')],
-
-        ]
-
-        reply_markup = InlineKeyboardMarkup(keyboard)
-        await context.bot.send_photo(chat_id=update.effective_chat.id, photo=photo_url, caption=f"""
-{update.effective_user.first_name}                                                                                               """
-                                     ,reply_markup=reply_markup )
-
-async def button(update: Update, context: CallbackContext) -> None:
-    query = update.callback_query
-    await query.answer()
-
-    if query.data == 'help':
-        help_text = """
-    ***Help Section :***
-    
-***/waifu - to guess character (only works in group)***
-***/fav - add your fav***
-***/trade - to trade character***
-***/gift - give any character from***
-***/harem - to see your harem***
-***/top - to see top users***
-***/changetime - change character appear time***
-    """ 
-        help_keyboard = [[InlineKeyboardButton("⤂ʙᴀᴄᴋ", callback_data='back')]]
-        reply_markup = InlineKeyboardMarkup(help_keyboard)
-
-        await context.bot.edit_message_caption(chat_id=update.effective_chat.id, message_id=query.message.message_id, caption=help_text, reply_markup=reply_markup, parse_mode='markdown')
-
-    elif query.data == 'back':
-
-        caption = f"""
-     ***ʜᴇʟʟᴏ....💫  {escape(first_name)}
-
-
-
-ᴡʜᴏ ᴀᴍ ɪ - ɪ'ᴍ*** [˹𝐘ᴏᴜʀ 𝐖ᴀɪғᴜ 𝐁ᴏᴛ˼](https://t.me/notyourtypeGod)
-
-***◈ ━━━━━━━━ ● ━━━━━━━━ ◈
-
-ᴀᴅᴅ ᴍᴇ ɪɴ ʏᴏᴜʀ ɢʀᴏᴜᴘ...✨️ ᴀɴᴅ ɪ ᴡɪʟʟ sᴇɴᴅ ʀᴀɴᴅᴏᴍ ᴄʜᴀʀᴀᴄᴛᴇʀs ᴀғᴛᴇʀ.. ᴇᴠᴇʀʏ 𝟷𝟶𝟶 ᴍᴇssᴀɢᴇs ɪɴ ɢʀᴏᴜᴘ.
-
-──────────────────
-✧⁠ COMMAND - ᴜsᴇ /ɢᴜᴇss  ᴛᴏ ᴄᴏʟʟᴇᴄᴛ ᴛʜᴀᴛ ᴄʜᴀʀᴀᴄᴛᴇʀs ɪɴ ʏᴏᴜʀ ᴄᴏʟʟᴇᴄᴛɪᴏɴ ᴀɴᴅ sᴇᴇ ᴄᴏʟʟᴇᴄᴛɪᴏɴ ʙʏ ᴜsɪɴɢ /ʜᴀʀᴇᴍ ... sᴏ ᴀᴅᴅ ɪɴ ʏᴏᴜʀ ɢʀᴏᴜᴘ ᴀɴᴅ ᴄᴏʟʟᴇᴄᴛ ʏᴏᴜʀ ʜᴀʀᴇᴍ...✨️
-
-◈ ━━━━━━━━ ● ━━━━━━━━ ◈***"""
-
-        keyboard = [
-           [InlineKeyboardButton("✤ ᴀᴅᴅ ᴍᴇ ✤", url=f'http://t.me/{BOT_USERNAME}?startgroup=new')],
-            [InlineKeyboardButton("☊ 𝗌ᴜᴘᴘᴏʀᴛ ☊", url=f'https://t.me/{SUPPORT_CHAT}'),
-            InlineKeyboardButton("✠ ᴜᴘᴅᴀᴛᴇ𝗌 ✠", url=f'https://t.me/{UPDATE_CHAT}')],
-            [InlineKeyboardButton("✇ ʜᴇʟᴘ ✇", callback_data='help')],[InlineKeyboardButton("≎ ᴄʀᴇᴅɪᴛ ≎", url=f'https://t.me/{UPDATE_CHAT}')],
-        ]
-        reply_markup = InlineKeyboardMarkup(keyboard)
-
-        await context.bot.edit_message_caption(chat_id=update.effective_chat.id, message_id=query.message.message_id, caption=caption, reply_markup=reply_markup, parse_mode='markdown')
-
-application.add_handler(CallbackQueryHandler(button, pattern='^help$|^back$', block=False))
-start_handler = CommandHandler('start', start, block=False)
-application.add_handler(start_handler)
+# Run the bot
+if __name__ == '__main__':
+    import asyncio
+    asyncio.run(main())
