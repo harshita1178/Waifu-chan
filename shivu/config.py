@@ -15,7 +15,7 @@ class Config(object):
     SUPPORT_CHAT = "Anime_Circle_Club"
     UPDATE_CHAT = "@Madara_X_Ultra_Waifus_Updates"
     BOT_USERNAME = "@Madara_X_Ultra_WaifusBot"
-    CHARA_CHANNEL_ID = -1002640379822
+    CHARA_CHANNEL_ID = -1002510711682
     api_id = 28159105
     api_hash = "a0936ddf210a7e091e19947c7dc70c91"
 
